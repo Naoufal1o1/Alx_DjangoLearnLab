@@ -1,0 +1,13 @@
+{% extends "blog/base.html" %}
+{% block title %}Search{% endblock %}
+{% block content %}
+<h2>Search Results</h2>
+{% if request.GET.q %}<p>Query: <b>{{ request.GET.q }}</b></p>{% endif %}
+<ul>
+  {% for post in results %}
+    <li><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></li>
+  {% empty %}
+    <li>No matching posts.</li>
+  {% endfor %}
+</ul>
+{% endblock %}
