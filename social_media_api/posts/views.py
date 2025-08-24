@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions, decorators, response, status, generics
+from rest_framework import viewsets, permissions, decorators, response, status, generics, views
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from .models import Post, Comment, Like
@@ -46,3 +46,17 @@ class FeedView(generics.ListAPIView):
 
     def get_queryset(self):
         return Post.objects.all().order_by('-created_at')
+
+class PostLikeView(views.APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    def post(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+        Like.objects.get_or_create(user=request.user, post=post)
+        return response.Response({'detail': 'Liked'})
+
+class PostUnlikeView(views.APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    def post(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+        Like.objects.filter(user=request.user, post=post).delete()
+        return response.Response({'detail': 'Unliked'})

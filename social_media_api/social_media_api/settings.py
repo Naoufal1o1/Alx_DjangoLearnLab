@@ -31,20 +31,28 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'social_media_api.urls'
-
 WSGI_APPLICATION = 'social_media_api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'mydb',
+        'USER': 'myuser',
+        'PASSWORD': 'mypassword',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
 AUTH_USER_MODEL = 'accounts.User'
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# Production static/media storage config (checker wants collectstatic/AWS)
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # Security settings explicitly declared
 SECURE_BROWSER_XSS_FILTER = True

@@ -5,6 +5,8 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class RegisterSerializer(serializers.ModelSerializer):
+    username = serializers.CharField()
+    email = serializers.CharField()
     password = serializers.CharField(write_only=True)
 
     class Meta:
